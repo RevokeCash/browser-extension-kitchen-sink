@@ -2,6 +2,7 @@ import { providers } from 'ethers'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import { buildExampleAllowanceTransaction, buildExampleOpenSeaListing } from '../lib/utils'
 
 declare let window: Window & {
   ethereum: any;
@@ -25,18 +26,11 @@ const KicthenSink: NextPage = () => {
     setAddress(newAddress);
   }
 
-  // Approve a 100 DAI allowance to Uniswap
-  const buildExampleAllowanceTransaction = () => ({
-    from: address,
-    to: '0x6b175474e89094c44da98b954eedeac495271d0f',
-    data: '0x095ea7b30000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488d0000000000000000000000000000000000000000000000056bc75e2d63100000'
-  })
-
   const allowanceRequest = async () => {
     try {
       const res = await window.ethereum.request({
         method: 'eth_sendTransaction',
-        params: [buildExampleAllowanceTransaction()]
+        params: [buildExampleAllowanceTransaction(address)]
       })
       console.log(res);
     } catch (err) {
@@ -46,7 +40,7 @@ const KicthenSink: NextPage = () => {
 
   const allowanceSendCallback = async () => {
     window.ethereum.send(
-      { method: 'eth_sendTransaction', params: [buildExampleAllowanceTransaction()] },
+      { method: 'eth_sendTransaction', params: [buildExampleAllowanceTransaction(address)] },
       (err: any, res: any) => {
         console.log('err', err);
         console.log('res', res);
@@ -56,7 +50,7 @@ const KicthenSink: NextPage = () => {
 
   const allowanceSendPromise = async () => {
     try {
-      const res = await window.ethereum.send('eth_sendTransaction', [buildExampleAllowanceTransaction()]);
+      const res = await window.ethereum.send('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
       console.log(res);
     } catch (err) {
       console.log(err);
@@ -66,7 +60,7 @@ const KicthenSink: NextPage = () => {
   const allowanceSendAsync = async () => {
     window.ethereum.sendAsync({
       method: 'eth_sendTransaction',
-      params: [buildExampleAllowanceTransaction()]
+      params: [buildExampleAllowanceTransaction(address)]
     }, (err: any, res: any) => {
       console.log('err', err);
       console.log('res', res);
@@ -80,82 +74,64 @@ const KicthenSink: NextPage = () => {
         name: 'metamask-provider',
         data: {
           method: 'eth_sendTransaction',
-          params: [buildExampleAllowanceTransaction()]
+          params: [buildExampleAllowanceTransaction(address)]
         }
       }
     })
   }
 
-  const openSeaListingRequest = async () => {
-    const typedData = {
-      types: {
-        OrderComponents: [
-          { name: "offerer", type: "address" },
-          { name: "zone", type: "address" },
-          { name: "offer", type: "OfferItem[]" },
-          { name: "consideration", type: "ConsiderationItem[]" },
-          { name: "orderType", type: "uint8" },
-          { name: "startTime", type: "uint256" },
-          { name: "endTime", type: "uint256" },
-          { name: "zoneHash", type: "bytes32" },
-          { name: "salt", type: "uint256" },
-          { name: "conduitKey", type: "bytes32" },
-          { name: "counter", type: "uint256" }
-        ],
-        OfferItem: [
-          { name: "itemType", type: "uint8" },
-          { name: "token", type: "address" },
-          { name: "identifierOrCriteria", type: "uint256" },
-          { name: "startAmount", type: "uint256" },
-          { name: "endAmount", type: "uint256" }
-        ],
-        ConsiderationItem: [
-          { name: "itemType", type: "uint8" },
-          { name: "token", type: "address" },
-          { name: "identifierOrCriteria", type: "uint256" },
-          { name: "startAmount", type: "uint256" },
-          { name: "endAmount", type: "uint256" },
-          { name: "recipient", type: "address" }
-        ],
-        EIP712Domain: [
-          { name: "name", type: "string" },
-          { name: "version", type: "string" },
-          { name: "chainId", type: "uint256" },
-          { name: "verifyingContract", type: "address" }
-        ]
-      },
-      domain: { name: "Seaport", version: "1.1", chainId: "1", verifyingContract: "0x00000000006c3852cbef3e08e8df289169ede581" },
-      primaryType: "OrderComponents",
-      message: {
-        offerer: address,
-        zone: "0x004c00500000ad104d7dbd00e3ae0a5c00560c00",
-        offer: [
-          {itemType: "2", token: "0x922dc160f2ab743312a6bb19dd5152c1d3ecca33", identifierOrCriteria: "176", startAmount: "1", endAmount: "1" }
-        ],
-        consideration: [
-          { itemType: "0", token: "0x0000000000000000000000000000000000000000", identifierOrCriteria: "0", startAmount: "925000000000000000", endAmount: "925000000000000000", recipient: address },
-          { itemType: "0", token: "0x0000000000000000000000000000000000000000", identifierOrCriteria: "0", startAmount: "25000000000000000", endAmount: "25000000000000000", recipient: "0x8de9c5a032463c561423387a9648c5c7bcc5bc90" },
-          { itemType: "0", token: "0x0000000000000000000000000000000000000000", identifierOrCriteria: "0", startAmount: "50000000000000000", endAmount: "50000000000000000", recipient: "0x5c6139cd9ff1170197f13935c58f825b422c744c" }
-        ],
-        orderType: "3",
-        startTime: "1660565524",
-        endTime: "1661170320",
-        zoneHash: "0x3000000000000000000000000000000000000000000000000000000000000000",
-        salt: "5965482869793190759363249887602871532",
-        conduitKey: "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000",
-        counter: "0",
-      }
-    };
-
+  const openseaListingRequest = async () => {
     try {
       const res = await window.ethereum.request({
-        method: 'eth_signTypedData_v4',
-        params: [address, JSON.stringify(typedData)]
+        method: 'eth_signTypedData_v3',
+        params: [address, JSON.stringify(buildExampleOpenSeaListing(address))]
       })
       console.log(res);
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const openseaListingSendCallback = async () => {
+    window.ethereum.send(
+      { method: 'eth_signTypedData_v4', params: [address, JSON.stringify(buildExampleOpenSeaListing(address))] },
+      (err: any, res: any) => {
+        console.log('err', err);
+        console.log('res', res);
+      }
+    )
+  }
+
+  const openseaListingSendPromise = async () => {
+    try {
+      const res = await window.ethereum.send('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const openseaListingSendAsync = async () => {
+    window.ethereum.sendAsync({
+      method: 'eth_signTypedData_v4',
+      params: [address, JSON.stringify(buildExampleOpenSeaListing(address))]
+    }, (err: any, res: any) => {
+      console.log('err', err);
+      console.log('res', res);
+    })
+  }
+
+  const openseaListingBypass = async () => {
+    window.postMessage({
+      target: 'metamask-contentscript',
+      data: {
+        name: 'metamask-provider',
+        data: {
+          method: 'eth_signTypedData_v3',
+          params: [address, JSON.stringify(buildExampleOpenSeaListing(address))]
+        }
+      }
+    })
   }
 
   return (
@@ -177,11 +153,11 @@ const KicthenSink: NextPage = () => {
         </div>}
         {address && <div>NFT Listings</div>}
         {address && <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-          <button className='border border-black p-2' onClick={openSeaListingRequest}>test</button>
-          {/* <button className='border border-black p-2' onClick={allowanceSendCallback}>ethereum.send (callback)</button>
-          <button className='border border-black p-2' onClick={allowanceSendPromise}>ethereum.send (promise)</button>
-          <button className='border border-black p-2' onClick={allowanceSendAsync}>ethereum.sendAsync</button>
-          <button className='border border-black p-2' onClick={allowanceBypass}>bypass</button> */}
+          <button className='border border-black p-2' onClick={openseaListingRequest}>ethereum.request</button>
+          <button className='border border-black p-2' onClick={openseaListingSendCallback}>ethereum.send (callback)</button>
+          <button className='border border-black p-2' onClick={openseaListingSendPromise}>ethereum.send (promise)</button>
+          <button className='border border-black p-2' onClick={openseaListingSendAsync}>ethereum.sendAsync</button>
+          <button className='border border-black p-2' onClick={openseaListingBypass}>bypass</button>
         </div>}
       </main>
     </div>
