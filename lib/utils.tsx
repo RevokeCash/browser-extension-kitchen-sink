@@ -9,6 +9,13 @@ export const buildExampleAllowanceTransaction = (address?: string) => ({
   data: '0x095ea7b30000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488d0000000000000000000000000000000000000000000000056bc75e2d63100000',
 });
 
+// Approve an additional 100 ENS allowance to ParaSwap
+export const buildExampleIncreaseAllowanceTransaction = (address?: string) => ({
+  from: address,
+  to: '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
+  data: '0x39509351000000000000000000000000216b4b4ba9f3e719726886d34a177484278bfcae0000000000000000000000000000000000000000000000056bc75e2d63100000',
+});
+
 export const buildExampleDaiPermit = (address?: string) => ({
   types: {
     EIP712Domain: [
@@ -74,7 +81,7 @@ export const buildExamplePermit = (address?: string) => ({
 });
 
 // List a CryptoDuckie for 1 ETH
-export const buildExampleOpenSeaListing = (address?: string) => ({
+export const buildExampleOpenSeaListing = (address?: string, consideration?: any[]) => ({
   types: {
     OrderComponents: [
       { name: 'offerer', type: 'address' },
@@ -130,7 +137,7 @@ export const buildExampleOpenSeaListing = (address?: string) => ({
         endAmount: '1',
       },
     ],
-    consideration: [
+    consideration: consideration ?? [
       {
         itemType: '0',
         token: '0x0000000000000000000000000000000000000000',
