@@ -21,8 +21,8 @@ const KicthenSink: NextPage = () => {
   // }, [])
 
   const connect = async () => {
-    const provider = new providers.Web3Provider(window.ethereum);
-    const [newAddress] = await provider.listAccounts();
+    const provider = new providers.Web3Provider(window.ethereum, 'any');
+    const [newAddress] = await provider.send('eth_requestAccounts', []);
     setAddress(newAddress);
   };
 
