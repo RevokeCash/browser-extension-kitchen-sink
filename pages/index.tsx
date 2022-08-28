@@ -2,7 +2,7 @@ import { providers } from 'ethers';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { buildExampleAllowanceTransaction, buildExampleDaiPermit, buildExampleIncreaseAllowanceTransaction, buildExampleOpenSeaListing, buildExamplePermit, bypass, request, sendAsync, sendCallback, sendPromise } from '../lib/utils';
+import { buildExampleAllowanceTransaction, buildExampleDaiPermit, buildExampleIncreaseAllowanceTransaction, buildExampleLooksRareListing, buildExampleOpenSeaListing, buildExamplePermit, bypass, request, sendAsync, sendCallback, sendPromise } from '../lib/utils';
 
 declare let window: Window & {
   ethereum: any;
@@ -39,6 +39,7 @@ const KicthenSink: NextPage = () => {
   const openseaListingSendAsync = () => sendAsync('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
   const openseaListingBypass = () => bypass('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
   const openseaListingNoConsideration = () => request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address, []))]);
+  const looksRareListing = () => request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleLooksRareListing(address))]);
 
   const permitRequest = () => request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleDaiPermit(address))]);
   const permitSendCallback = () => sendCallback('eth_signTypedData_v4', [address, JSON.stringify(buildExampleDaiPermit(address))]);
@@ -104,9 +105,12 @@ const KicthenSink: NextPage = () => {
                 bypass
               </button>
             </div>
-            <div>
+            <div className="flex w-full items-center justify-center px-20 text-center gap-2">
               <button className="border border-black p-2" onClick={openseaListingNoConsideration}>
                 empty consideration
+              </button>
+              <button className="border border-black p-2" onClick={looksRareListing}>
+                looksrare
               </button>
             </div>
           </>
