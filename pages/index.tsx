@@ -47,6 +47,18 @@ const KicthenSink: NextPage = () => {
   const permitSendAsync = () => sendAsync('eth_signTypedData_v4', [address, JSON.stringify(buildExamplePermit(address))]);
   const permitBypass = () => bypass('eth_signTypedData_v3', [address, JSON.stringify(buildExamplePermit(address))]);
 
+  const ethSignRequest = () => request('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignSendCallback = () => sendCallback('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignSendPromise = () => sendPromise('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignSendAsync = () => sendAsync('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignBypass = () => bypass('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+
+  const personalSignRequest = () => request('personal_sign', ['0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4', address]);
+  const personalSignSendCallback = () => sendCallback('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const personalSignSendPromise = () => sendPromise('personal_sign', ['0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4', address]);
+  const personalSignSendAsync = () => sendAsync('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const personalSignBypass = () => bypass('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -131,6 +143,46 @@ const KicthenSink: NextPage = () => {
               ethereum.sendAsync
             </button>
             <button className="border border-black p-2" onClick={permitBypass}>
+              bypass
+            </button>
+          </div>
+        )}
+        {address && <div>eth_sign</div>}
+        {address && (
+          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
+            <button className="border border-black p-2" onClick={ethSignRequest}>
+              ethereum.request
+            </button>
+            <button className="border border-black p-2" onClick={ethSignSendCallback}>
+              ethereum.send (callback)
+            </button>
+            <button className="border border-black p-2" onClick={ethSignSendPromise}>
+              ethereum.send (promise)
+            </button>
+            <button className="border border-black p-2" onClick={ethSignSendAsync}>
+              ethereum.sendAsync
+            </button>
+            <button className="border border-black p-2" onClick={ethSignBypass}>
+              bypass
+            </button>
+          </div>
+        )}
+        {address && <div>personal_sign</div>}
+        {address && (
+          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
+            <button className="border border-black p-2" onClick={personalSignRequest}>
+              ethereum.request
+            </button>
+            <button className="border border-black p-2" onClick={personalSignSendCallback}>
+              ethereum.send (callback)
+            </button>
+            <button className="border border-black p-2" onClick={personalSignSendPromise}>
+              ethereum.send (promise)
+            </button>
+            <button className="border border-black p-2" onClick={personalSignSendAsync}>
+              ethereum.sendAsync
+            </button>
+            <button className="border border-black p-2" onClick={personalSignBypass}>
               bypass
             </button>
           </div>
