@@ -20,6 +20,15 @@ const KicthenSink: NextPage = () => {
   //   })
   // }, [])
 
+  useEffect(() => {
+    const connectIfAlreadyConnectedBefore = async () => {
+      const provider = new providers.Web3Provider(window.ethereum, 'any');
+      const [connectedAddress] = await provider.listAccounts();
+      if (connectedAddress) setAddress(connectedAddress);
+    }
+    connectIfAlreadyConnectedBefore();
+  }, [])
+
   const connect = async () => {
     const provider = new providers.Web3Provider(window.ethereum, 'any');
     const [newAddress] = await provider.send('eth_requestAccounts', []);
