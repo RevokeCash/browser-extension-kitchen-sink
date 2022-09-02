@@ -2,7 +2,19 @@ import { providers } from 'ethers';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { buildExampleAllowanceTransaction, buildExampleDaiPermit, buildExampleIncreaseAllowanceTransaction, buildExampleLooksRareListing, buildExampleOpenSeaListing, buildExamplePermit, bypass, request, sendAsync, sendCallback, sendPromise } from '../lib/utils';
+import {
+  buildExampleAllowanceTransaction,
+  buildExampleDaiPermit,
+  buildExampleIncreaseAllowanceTransaction,
+  buildExampleLooksRareListing,
+  buildExampleOpenSeaListing,
+  buildExamplePermit,
+  bypass,
+  request,
+  sendAsync,
+  sendCallback,
+  sendPromise,
+} from '../lib/utils';
 
 declare let window: Window & {
   ethereum: any;
@@ -25,9 +37,9 @@ const KicthenSink: NextPage = () => {
       const provider = new providers.Web3Provider(window.ethereum, 'any');
       const [connectedAddress] = await provider.listAccounts();
       if (connectedAddress) setAddress(connectedAddress);
-    }
+    };
     connectIfAlreadyConnectedBefore();
-  }, [])
+  }, []);
 
   const connect = async () => {
     const provider = new providers.Web3Provider(window.ethereum, 'any');
@@ -40,33 +52,55 @@ const KicthenSink: NextPage = () => {
   const allowanceSendPromise = () => sendPromise('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
   const allowanceSendAsync = () => sendAsync('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
   const allowanceBypass = () => bypass('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
-  const increaseAllowanceRequest = () => request('eth_sendTransaction', [buildExampleIncreaseAllowanceTransaction(address)]);
+  const increaseAllowanceRequest = () =>
+    request('eth_sendTransaction', [buildExampleIncreaseAllowanceTransaction(address)]);
 
-  const openseaListingRequest = () => request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingSendCallback = () => sendCallback('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingSendPromise = () => sendPromise('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingSendAsync = () => sendAsync('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingBypass = () => bypass('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingNoConsideration = () => request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address, []))]);
-  const looksRareListing = () => request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleLooksRareListing(address))]);
+  const openseaListingRequest = () =>
+    request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
+  const openseaListingSendCallback = () =>
+    sendCallback('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
+  const openseaListingSendPromise = () =>
+    sendPromise('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
+  const openseaListingSendAsync = () =>
+    sendAsync('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
+  const openseaListingBypass = () =>
+    bypass('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
+  const openseaListingNoConsideration = () =>
+    request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address, []))]);
+  const looksRareListing = () =>
+    request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleLooksRareListing(address))]);
 
-  const permitRequest = () => request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleDaiPermit(address))]);
-  const permitSendCallback = () => sendCallback('eth_signTypedData_v4', [address, JSON.stringify(buildExampleDaiPermit(address))]);
-  const permitSendPromise = () => sendPromise('eth_signTypedData_v3', [address, JSON.stringify(buildExamplePermit(address))]);
-  const permitSendAsync = () => sendAsync('eth_signTypedData_v4', [address, JSON.stringify(buildExamplePermit(address))]);
+  const permitRequest = () =>
+    request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleDaiPermit(address))]);
+  const permitSendCallback = () =>
+    sendCallback('eth_signTypedData_v4', [address, JSON.stringify(buildExampleDaiPermit(address))]);
+  const permitSendPromise = () =>
+    sendPromise('eth_signTypedData_v3', [address, JSON.stringify(buildExamplePermit(address))]);
+  const permitSendAsync = () =>
+    sendAsync('eth_signTypedData_v4', [address, JSON.stringify(buildExamplePermit(address))]);
   const permitBypass = () => bypass('eth_signTypedData_v3', [address, JSON.stringify(buildExamplePermit(address))]);
 
-  const ethSignRequest = () => request('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const ethSignSendCallback = () => sendCallback('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const ethSignSendPromise = () => sendPromise('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const ethSignSendAsync = () => sendAsync('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const ethSignBypass = () => bypass('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignRequest = () =>
+    request('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignSendCallback = () =>
+    sendCallback('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignSendPromise = () =>
+    sendPromise('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignSendAsync = () =>
+    sendAsync('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const ethSignBypass = () =>
+    bypass('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
 
-  const personalSignRequest = () => request('personal_sign', ['0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4', address]);
-  const personalSignSendCallback = () => sendCallback('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const personalSignSendPromise = () => sendPromise('personal_sign', ['0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4', address]);
-  const personalSignSendAsync = () => sendAsync('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const personalSignBypass = () => bypass('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const personalSignRequest = () =>
+    request('personal_sign', ['0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4', address]);
+  const personalSignSendCallback = () =>
+    sendCallback('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const personalSignSendPromise = () =>
+    sendPromise('personal_sign', ['0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4', address]);
+  const personalSignSendAsync = () =>
+    sendAsync('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+  const personalSignBypass = () =>
+    bypass('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
