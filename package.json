@@ -4,7 +4,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "lint": "prettier -w ."
   },
   "dependencies": {
     "ethers": "^5.6.9",

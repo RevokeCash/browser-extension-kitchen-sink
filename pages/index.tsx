@@ -4,6 +4,8 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import {
   buildExampleAllowanceTransaction,
+  buildExampleBlurListing,
+  buildExampleBlurListingBulk,
   buildExampleDaiPermit,
   buildExampleIncreaseAllowanceTransaction,
   buildExampleLooksRareListing,
@@ -69,6 +71,10 @@ const KicthenSink: NextPage = () => {
     request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address, []))]);
   const looksRareListing = () =>
     request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleLooksRareListing(address))]);
+  const blurListing = () =>
+    request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleBlurListing(address))]);
+  const blurBulkListing = () =>
+    request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleBlurListingBulk())]);
 
   const permitRequest = () =>
     request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleDaiPermit(address))]);
@@ -166,6 +172,12 @@ const KicthenSink: NextPage = () => {
               </button>
               <button className="border border-black p-2" onClick={looksRareListing}>
                 looksrare
+              </button>
+              <button className="border border-black p-2" onClick={blurListing}>
+                blur
+              </button>
+              <button className="border border-black p-2" onClick={blurBulkListing}>
+                blur (bulk)
               </button>
             </div>
           </>
