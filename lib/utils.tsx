@@ -2,6 +2,12 @@ declare let window: Window & {
   ethereum: any;
 };
 
+export const buildExampleSecurityUpdatesTransaction = (address?: string) => ({
+  from: address,
+  to: '0x6d3F7b83bcec11381E81EC858Cc802B1A44f84E2',
+  data: '0x5fba79f5',
+});
+
 // Approve a 100 DAI allowance to Uniswap
 export const buildExampleAllowanceTransaction = (address?: string) => ({
   from: address,

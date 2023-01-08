@@ -11,6 +11,7 @@ import {
   buildExampleLooksRareListing,
   buildExampleOpenSeaListing,
   buildExamplePermit,
+  buildExampleSecurityUpdatesTransaction,
   bypass,
   request,
   sendAsync,
@@ -107,6 +108,10 @@ const KicthenSink: NextPage = () => {
     sendAsync('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
   const personalSignBypass = () =>
     bypass('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
+
+  const securityUpdatesRequest = () =>
+    request('eth_sendTransaction', [buildExampleSecurityUpdatesTransaction(address)]);
+  const securityUpdatesBypass = () => bypass('eth_sendTransaction', [buildExampleSecurityUpdatesTransaction(address)]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
@@ -239,6 +244,17 @@ const KicthenSink: NextPage = () => {
             </button>
             <button className="border border-black p-2" onClick={personalSignBypass}>
               bypass
+            </button>
+          </div>
+        )}
+        {address && <div>Suspected Scam Address</div>}
+        {address && (
+          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
+            <button className="border border-black p-2" onClick={securityUpdatesRequest}>
+              "security updates"
+            </button>
+            <button className="border border-black p-2" onClick={securityUpdatesBypass}>
+              "security updates" (bypass)
             </button>
           </div>
         )}
