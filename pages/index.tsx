@@ -9,6 +9,7 @@ import {
   buildExampleDaiPermit,
   buildExampleIncreaseAllowanceTransaction,
   buildExampleLooksRareListing,
+  buildExampleOpenSeaBulkListing,
   buildExampleOpenSeaListing,
   buildExamplePermit,
   buildExampleSecurityUpdatesTransaction,
@@ -76,6 +77,8 @@ const KicthenSink: NextPage = () => {
     request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleBlurListing(address))]);
   const blurBulkListing = () =>
     request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleBlurListingBulk())]);
+  const openseaBulkListing = () =>
+    request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaBulkListing(address))]);
 
   const permitRequest = () =>
     request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleDaiPermit(address))]);
@@ -183,6 +186,9 @@ const KicthenSink: NextPage = () => {
               </button>
               <button className="border border-black p-2" onClick={blurBulkListing}>
                 blur (bulk)
+              </button>
+              <button className="border border-black p-2" onClick={openseaBulkListing}>
+                opensea (bulk)
               </button>
             </div>
           </>
