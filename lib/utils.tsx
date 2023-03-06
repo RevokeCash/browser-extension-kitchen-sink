@@ -587,6 +587,94 @@ export const buildExampleBlurListingBulk = () => ({
   },
 });
 
+// https://twitter.com/kongtaoxing/status/1616051680533184512
+// TODO: Add test for non-native Biconomy Relay transaction
+export const BuildBiconomyNativeMetatransaction = (address?: string) => ({
+  types: {
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'verifyingContract', type: 'address' },
+      { name: 'salt', type: 'bytes32' },
+    ],
+    MetaTransaction: [
+      { name: 'nonce', type: 'uint256' },
+      { name: 'from', type: 'address' },
+      { name: 'functionSignature', type: 'bytes' },
+    ],
+  },
+  domain: {
+    name: 'Wrapped Ether',
+    version: '1',
+    verifyingContract: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+    salt: '0x0000000000000000000000000000000000000000000000000000000000000089',
+  },
+  primaryType: 'MetaTransaction',
+  message: {
+    nonce: 0,
+    from: address,
+    functionSignature:
+      '0x095ea7b30000000000000000000000001fdc5e69729eecf8e933c904e86faf7a8886f661ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+  },
+});
+
+export const buildGsnRelayRequest = (address?: string) => ({
+  types: {
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' },
+    ],
+    RelayRequest: [
+      { name: 'from', type: 'address' },
+      { name: 'to', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'gas', type: 'uint256' },
+      { name: 'nonce', type: 'uint256' },
+      { name: 'data', type: 'bytes' },
+      { name: 'validUntilTime', type: 'uint256' },
+      { name: 'relayData', type: 'RelayData' },
+    ],
+    RelayData: [
+      { name: 'maxFeePerGas', type: 'uint256' },
+      { name: 'maxPriorityFeePerGas', type: 'uint256' },
+      { name: 'transactionCalldataGasUsed', type: 'uint256' },
+      { name: 'relayWorker', type: 'address' },
+      { name: 'paymaster', type: 'address' },
+      { name: 'forwarder', type: 'address' },
+      { name: 'paymasterData', type: 'bytes' },
+      { name: 'clientId', type: 'uint256' },
+    ],
+  },
+  domain: {
+    name: 'GSN Relayed Transaction',
+    version: '3',
+    chainId: 1,
+    verifyingContract: '0xB2b5841DBeF766d4b521221732F9B618fCf34A87',
+  },
+  primaryType: 'RelayRequest',
+  message: {
+    to: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    data: '0x095ea7b30000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488d0000000000000000000000000000000000000000000000056bc75e2d63100000',
+    from: address,
+    value: '0',
+    nonce: '0',
+    gas: '500000',
+    validUntilTime: '1678035078',
+    relayData: {
+      relayWorker: '0x249c573c2cf62b798db4e6b563fbc636247f098b',
+      transactionCalldataGasUsed: '0x1b20',
+      paymasterData: '0x',
+      maxFeePerGas: '1201200000',
+      maxPriorityFeePerGas: '1201200000',
+      paymaster: '0x6E4f6878d1188d281F79a8d06e1f52A5cF80b792',
+      clientId: '1',
+      forwarder: '0xB2b5841DBeF766d4b521221732F9B618fCf34A87',
+    },
+  },
+});
+
 export const request = async (method: string, params: any[]) => {
   try {
     const res = await window.ethereum.request({ method, params });

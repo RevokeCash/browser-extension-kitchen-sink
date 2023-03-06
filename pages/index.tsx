@@ -9,6 +9,7 @@ import {
   buildExampleDaiPermit,
   buildExampleIncreaseAllowanceTransaction,
   buildExampleLooksRareListing,
+  BuildBiconomyNativeMetatransaction,
   buildExampleOpenSeaBulkListing,
   buildExampleOpenSeaListing,
   buildExamplePermit,
@@ -18,6 +19,7 @@ import {
   sendAsync,
   sendCallback,
   sendPromise,
+  buildGsnRelayRequest,
 } from '../lib/utils';
 
 declare let window: Window & {
@@ -115,6 +117,11 @@ const KicthenSink: NextPage = () => {
   const securityUpdatesRequest = () =>
     request('eth_sendTransaction', [buildExampleSecurityUpdatesTransaction(address)]);
   const securityUpdatesBypass = () => bypass('eth_sendTransaction', [buildExampleSecurityUpdatesTransaction(address)]);
+
+  const biconomyNativeRequest = () =>
+    request('eth_signTypedData_v4', [address, JSON.stringify(BuildBiconomyNativeMetatransaction(address))]);
+  const gsnRelayRequest = () =>
+    request('eth_signTypedData_v4', [address, JSON.stringify(buildGsnRelayRequest(address))]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
@@ -261,6 +268,17 @@ const KicthenSink: NextPage = () => {
             </button>
             <button className="border border-black p-2" onClick={securityUpdatesBypass}>
               "security updates" (bypass)
+            </button>
+          </div>
+        )}
+        {address && <div>Metatransactions</div>}
+        {address && (
+          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
+            <button className="border border-black p-2" onClick={biconomyNativeRequest}>
+              Biconomy Native
+            </button>
+            <button className="border border-black p-2" onClick={gsnRelayRequest}>
+              GSN Relay
             </button>
           </div>
         )}
