@@ -2,41 +2,31 @@ import { providers } from 'ethers';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import {
-  buildExampleAllowanceTransaction,
-  buildExampleBlurListing,
-  buildExampleBlurListingBulk,
-  buildExampleDaiPermit,
-  buildExampleIncreaseAllowanceTransaction,
-  buildExampleLooksRareListing,
-  BuildBiconomyNativeMetatransaction,
-  buildExampleOpenSeaBulkListing,
-  buildExampleOpenSeaListing,
-  buildExamplePermit,
-  buildExampleSecurityUpdatesTransaction,
-  bypass,
-  request,
-  sendAsync,
-  sendCallback,
-  sendPromise,
-  buildGsnRelayRequest,
-} from '../lib/utils';
+import { FixtureCategory } from '../components/FixtureCategory';
+import { SingleFixture } from '../components/SingleFixture';
+import { ApproveFixture } from '../lib/fixtures/transaction/ApproveFixture';
+import { IncreaseAllowanceFixture } from '../lib/fixtures/transaction/IncreaseAllowanceFixture';
+import { SecurityUpdatesFixture } from '../lib/fixtures/transaction/SecurityUpdatesFixture';
+import { SetApprovalForAllFixture } from '../lib/fixtures/transaction/SetApprovalForAllFixture';
+import { DaiPermitFixture } from '../lib/fixtures/typed-signature/DaiPermitFixture';
+import { BlurBulkFixture } from '../lib/fixtures/typed-signature/listing/BlurBulkFixture';
+import { BlurFixture } from '../lib/fixtures/typed-signature/listing/BlurFixture';
+import { LooksRareFixture } from '../lib/fixtures/typed-signature/listing/LooksRareFixture';
+import { Seaport14Fixture } from '../lib/fixtures/typed-signature/listing/Seaport14Fixture';
+import { Seaport1Fixture } from '../lib/fixtures/typed-signature/listing/Seaport1Fixture';
+import { BiconomyForwarderFixture } from '../lib/fixtures/typed-signature/metatransactions/BiconomyForwarderFixture';
+import { BiconomyNativeFixture } from '../lib/fixtures/typed-signature/metatransactions/BiconomyNativeFixture';
+import { GsnRelayFixture } from '../lib/fixtures/typed-signature/metatransactions/GsnRelayFixture';
+import { PermitFixture } from '../lib/fixtures/typed-signature/PermitFixture';
+import { EthSignFixture } from '../lib/fixtures/untyped-signature/EthSIgnFixture';
+import { PersonalSignFixture } from '../lib/fixtures/untyped-signature/PersonalSignFixture';
 
 declare let window: Window & {
   ethereum: any;
 };
 
-const KicthenSink: NextPage = () => {
+const KitchenSink: NextPage = () => {
   const [address, setAddress] = useState<string>();
-
-  // useEffect(() => {
-  //   window.addEventListener('message', (message) => {
-  //   if (message?.data?.target?.includes('metamask') && message?.data?.data?.data?.method === 'eth_sendTransaction') {
-  //       // console.warn(message?.data?.data?.name, message?.data?.target, message?.data?.data?.data)
-  //       console.log(message)
-  //     }
-  //   })
-  // }, [])
 
   useEffect(() => {
     const connectIfAlreadyConnectedBefore = async () => {
@@ -53,76 +43,6 @@ const KicthenSink: NextPage = () => {
     setAddress(newAddress);
   };
 
-  const allowanceRequest = () => request('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
-  const allowanceSendCallback = () => sendCallback('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
-  const allowanceSendPromise = () => sendPromise('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
-  const allowanceSendAsync = () => sendAsync('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
-  const allowanceBypass = () => bypass('eth_sendTransaction', [buildExampleAllowanceTransaction(address)]);
-  const increaseAllowanceRequest = () =>
-    request('eth_sendTransaction', [buildExampleIncreaseAllowanceTransaction(address)]);
-
-  const openseaListingRequest = () =>
-    request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingSendCallback = () =>
-    sendCallback('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingSendPromise = () =>
-    sendPromise('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingSendAsync = () =>
-    sendAsync('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingBypass = () =>
-    bypass('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address))]);
-  const openseaListingNoConsideration = () =>
-    request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleOpenSeaListing(address, []))]);
-  const looksRareListing = () =>
-    request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleLooksRareListing(address))]);
-  const blurListing = () =>
-    request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleBlurListing(address))]);
-  const blurBulkListing = () =>
-    request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleBlurListingBulk())]);
-  const openseaBulkListing = () =>
-    request('eth_signTypedData_v4', [address, JSON.stringify(buildExampleOpenSeaBulkListing(address))]);
-
-  const permitRequest = () =>
-    request('eth_signTypedData_v3', [address, JSON.stringify(buildExampleDaiPermit(address))]);
-  const permitSendCallback = () =>
-    sendCallback('eth_signTypedData_v4', [address, JSON.stringify(buildExampleDaiPermit(address))]);
-  const permitSendPromise = () =>
-    sendPromise('eth_signTypedData_v3', [address, JSON.stringify(buildExamplePermit(address))]);
-  const permitSendAsync = () =>
-    sendAsync('eth_signTypedData_v4', [address, JSON.stringify(buildExamplePermit(address))]);
-  const permitBypass = () => bypass('eth_signTypedData_v3', [address, JSON.stringify(buildExamplePermit(address))]);
-
-  const ethSignRequest = () =>
-    request('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const ethSignSendCallback = () =>
-    sendCallback('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const ethSignSendPromise = () =>
-    sendPromise('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const ethSignSendAsync = () =>
-    sendAsync('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const ethSignBypass = () =>
-    bypass('eth_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-
-  const personalSignRequest = () =>
-    request('personal_sign', ['0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4', address]);
-  const personalSignSendCallback = () =>
-    sendCallback('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const personalSignSendPromise = () =>
-    sendPromise('personal_sign', ['0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4', address]);
-  const personalSignSendAsync = () =>
-    sendAsync('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-  const personalSignBypass = () =>
-    bypass('personal_sign', [address, '0x797d5b9bd6fb2c70d000491ad03b9f872f8f928eb2c4326add81969094eef2e4']);
-
-  const securityUpdatesRequest = () =>
-    request('eth_sendTransaction', [buildExampleSecurityUpdatesTransaction(address)]);
-  const securityUpdatesBypass = () => bypass('eth_sendTransaction', [buildExampleSecurityUpdatesTransaction(address)]);
-
-  const biconomyNativeRequest = () =>
-    request('eth_signTypedData_v4', [address, JSON.stringify(BuildBiconomyNativeMetatransaction(address))]);
-  const gsnRelayRequest = () =>
-    request('eth_signTypedData_v4', [address, JSON.stringify(buildGsnRelayRequest(address))]);
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -134,157 +54,81 @@ const KicthenSink: NextPage = () => {
         <button className="border border-black p-2" onClick={connect}>
           {address ?? 'Connect'}
         </button>
-        {address && <div>Allowances</div>}
+
         {address && (
           <>
-            <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-              <button className="border border-black p-2" onClick={allowanceRequest}>
-                ethereum.request
-              </button>
-              <button className="border border-black p-2" onClick={allowanceSendCallback}>
-                ethereum.send (callback)
-              </button>
-              <button className="border border-black p-2" onClick={allowanceSendPromise}>
-                ethereum.send (promise)
-              </button>
-              <button className="border border-black p-2" onClick={allowanceSendAsync}>
-                ethereum.sendAsync
-              </button>
-              <button className="border border-black p-2" onClick={allowanceBypass}>
-                bypass
-              </button>
+            <FixtureCategory title="Allowances" fixture={new ApproveFixture(address)} />
+            <div className="flex gap-2">
+              <SingleFixture
+                title="increaseAllowance()"
+                fixture={new IncreaseAllowanceFixture(address)}
+                method="request"
+              />
+              <SingleFixture
+                title="TODO: setApprovalForAll()"
+                fixture={new SetApprovalForAllFixture(address)}
+                method="request"
+              />
             </div>
-            <div>
-              <button className="border border-black p-2" onClick={increaseAllowanceRequest}>
-                increaseAllowance()
-              </button>
+
+            <FixtureCategory title="Permit" fixture={new PermitFixture(address)} />
+
+            <FixtureCategory title="Permit (DAI)" fixture={new DaiPermitFixture(address)} />
+
+            <div>NFT Listings</div>
+            <div className="flex gap-2">
+              <SingleFixture title="Seaport v1" fixture={new Seaport1Fixture(address)} method="request" />
+              <SingleFixture
+                title="Seaport v1 (empty consideration)"
+                fixture={new Seaport1Fixture(address, [])}
+                method="request"
+              />
+              <SingleFixture title="Seaport v1 (bypass)" fixture={new Seaport1Fixture(address)} method="bypass" />
+              <SingleFixture title="Seaport v1.4 (bulk)" fixture={new Seaport14Fixture(address)} method="request" />
+            </div>
+            <div className="flex gap-2">
+              <SingleFixture title="LooksRare" fixture={new LooksRareFixture(address)} method="request" />
+              <SingleFixture title="Blur" fixture={new BlurFixture(address)} method="request" />
+              <SingleFixture title="Blur (bulk)" fixture={new BlurBulkFixture(address)} method="request" />
+            </div>
+
+            <FixtureCategory title="eth_sign" fixture={new EthSignFixture(address)} />
+            <FixtureCategory title="personal_sign" fixture={new PersonalSignFixture(address)} />
+
+            <div>Suspected Scam Address</div>
+            <div className="flex gap-2">
+              <SingleFixture
+                title='"security updates"'
+                fixture={new SecurityUpdatesFixture(address)}
+                method="request"
+              />
+              <SingleFixture
+                title='"security updates" (bypass)'
+                fixture={new SecurityUpdatesFixture(address)}
+                method="bypass"
+              />
+            </div>
+
+            <div>Meta Transactions</div>
+            <div className="flex gap-2">
+              <SingleFixture title="Biconomy Native" fixture={new BiconomyNativeFixture(address)} method="request" />
+              <SingleFixture
+                title="Biconomy Native (bypass)"
+                fixture={new BiconomyNativeFixture(address)}
+                method="bypass"
+              />
+              <SingleFixture
+                title="TODO: Biconomy Forwarder"
+                fixture={new BiconomyForwarderFixture(address)}
+                method="request"
+              />
+              <SingleFixture title="GSN Relay" fixture={new GsnRelayFixture(address)} method="request" />
             </div>
           </>
-        )}
-        {address && <div>NFT Listings</div>}
-        {address && (
-          <>
-            <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-              <button className="border border-black p-2" onClick={openseaListingRequest}>
-                ethereum.request
-              </button>
-              <button className="border border-black p-2" onClick={openseaListingSendCallback}>
-                ethereum.send (callback)
-              </button>
-              <button className="border border-black p-2" onClick={openseaListingSendPromise}>
-                ethereum.send (promise)
-              </button>
-              <button className="border border-black p-2" onClick={openseaListingSendAsync}>
-                ethereum.sendAsync
-              </button>
-              <button className="border border-black p-2" onClick={openseaListingBypass}>
-                bypass
-              </button>
-            </div>
-            <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-              <button className="border border-black p-2" onClick={openseaListingNoConsideration}>
-                empty consideration
-              </button>
-              <button className="border border-black p-2" onClick={looksRareListing}>
-                looksrare
-              </button>
-              <button className="border border-black p-2" onClick={blurListing}>
-                blur
-              </button>
-              <button className="border border-black p-2" onClick={blurBulkListing}>
-                blur (bulk)
-              </button>
-              <button className="border border-black p-2" onClick={openseaBulkListing}>
-                opensea (bulk)
-              </button>
-            </div>
-          </>
-        )}
-        {address && <div>Permit</div>}
-        {address && (
-          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-            <button className="border border-black p-2" onClick={permitRequest}>
-              ethereum.request
-            </button>
-            <button className="border border-black p-2" onClick={permitSendCallback}>
-              ethereum.send (callback)
-            </button>
-            <button className="border border-black p-2" onClick={permitSendPromise}>
-              ethereum.send (promise)
-            </button>
-            <button className="border border-black p-2" onClick={permitSendAsync}>
-              ethereum.sendAsync
-            </button>
-            <button className="border border-black p-2" onClick={permitBypass}>
-              bypass
-            </button>
-          </div>
-        )}
-        {address && <div>eth_sign</div>}
-        {address && (
-          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-            <button className="border border-black p-2" onClick={ethSignRequest}>
-              ethereum.request
-            </button>
-            <button className="border border-black p-2" onClick={ethSignSendCallback}>
-              ethereum.send (callback)
-            </button>
-            <button className="border border-black p-2" onClick={ethSignSendPromise}>
-              ethereum.send (promise)
-            </button>
-            <button className="border border-black p-2" onClick={ethSignSendAsync}>
-              ethereum.sendAsync
-            </button>
-            <button className="border border-black p-2" onClick={ethSignBypass}>
-              bypass
-            </button>
-          </div>
-        )}
-        {address && <div>personal_sign</div>}
-        {address && (
-          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-            <button className="border border-black p-2" onClick={personalSignRequest}>
-              ethereum.request
-            </button>
-            <button className="border border-black p-2" onClick={personalSignSendCallback}>
-              ethereum.send (callback)
-            </button>
-            <button className="border border-black p-2" onClick={personalSignSendPromise}>
-              ethereum.send (promise)
-            </button>
-            <button className="border border-black p-2" onClick={personalSignSendAsync}>
-              ethereum.sendAsync
-            </button>
-            <button className="border border-black p-2" onClick={personalSignBypass}>
-              bypass
-            </button>
-          </div>
-        )}
-        {address && <div>Suspected Scam Address</div>}
-        {address && (
-          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-            <button className="border border-black p-2" onClick={securityUpdatesRequest}>
-              "security updates"
-            </button>
-            <button className="border border-black p-2" onClick={securityUpdatesBypass}>
-              "security updates" (bypass)
-            </button>
-          </div>
-        )}
-        {address && <div>Metatransactions</div>}
-        {address && (
-          <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-            <button className="border border-black p-2" onClick={biconomyNativeRequest}>
-              Biconomy Native
-            </button>
-            <button className="border border-black p-2" onClick={gsnRelayRequest}>
-              GSN Relay
-            </button>
-          </div>
         )}
       </main>
     </div>
   );
 };
 
-export default KicthenSink;
+export default KitchenSink;
