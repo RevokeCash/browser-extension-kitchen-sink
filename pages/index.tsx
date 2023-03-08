@@ -6,6 +6,7 @@ import { FixtureCategory } from '../components/FixtureCategory';
 import { SingleFixture } from '../components/SingleFixture';
 import { ApproveFixture } from '../lib/fixtures/transaction/ApproveFixture';
 import { IncreaseAllowanceFixture } from '../lib/fixtures/transaction/IncreaseAllowanceFixture';
+import { Permit2ApproveFixture } from '../lib/fixtures/transaction/Permit2ApproveFixture';
 import { SecurityUpdatesFixture } from '../lib/fixtures/transaction/SecurityUpdatesFixture';
 import { SetApprovalForAllFixture } from '../lib/fixtures/transaction/SetApprovalForAllFixture';
 import { DaiPermitFixture } from '../lib/fixtures/typed-signature/DaiPermitFixture';
@@ -17,7 +18,10 @@ import { Seaport1Fixture } from '../lib/fixtures/typed-signature/listing/Seaport
 import { BiconomyForwarderFixture } from '../lib/fixtures/typed-signature/metatransactions/BiconomyForwarderFixture';
 import { BiconomyNativeFixture } from '../lib/fixtures/typed-signature/metatransactions/BiconomyNativeFixture';
 import { GsnRelayFixture } from '../lib/fixtures/typed-signature/metatransactions/GsnRelayFixture';
+import { Permit2BatchFixture } from '../lib/fixtures/typed-signature/Permit2BatchFixture';
+import { Permit2SingleFixture } from '../lib/fixtures/typed-signature/Permit2SingleFixture';
 import { PermitFixture } from '../lib/fixtures/typed-signature/PermitFixture';
+import { PermitForAllFixture } from '../lib/fixtures/typed-signature/PermitForAllFixture';
 import { EthSignFixture } from '../lib/fixtures/untyped-signature/EthSIgnFixture';
 import { PersonalSignFixture } from '../lib/fixtures/untyped-signature/PersonalSignFixture';
 
@@ -65,15 +69,25 @@ const KitchenSink: NextPage = () => {
                 method="request"
               />
               <SingleFixture
-                title="TODO: setApprovalForAll()"
+                title="setApprovalForAll()"
                 fixture={new SetApprovalForAllFixture(address)}
+                method="request"
+              />
+              <SingleFixture
+                title="TODO: Permit2 approve()"
+                fixture={new Permit2ApproveFixture(address)}
                 method="request"
               />
             </div>
 
             <FixtureCategory title="Permit" fixture={new PermitFixture(address)} />
+            <div className="flex gap-2">
+              <SingleFixture title="Permit2 Single" fixture={new Permit2SingleFixture(address)} method="request" />
+              <SingleFixture title="Permit2 Batch" fixture={new Permit2BatchFixture(address)} method="request" />
+              <SingleFixture title="PermitForAll" fixture={new PermitForAllFixture(address)} method="request" />
+            </div>
 
-            <FixtureCategory title="Permit (DAI)" fixture={new DaiPermitFixture(address)} />
+            <FixtureCategory title="Permit (DAI + eth_signTypedData_v3)" fixture={new DaiPermitFixture(address)} />
 
             <div>NFT Listings</div>
             <div className="flex gap-2">
