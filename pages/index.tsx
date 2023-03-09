@@ -1,6 +1,5 @@
 import { providers } from 'ethers';
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { FixtureCategory } from '../components/FixtureCategory';
 import { SingleFixture } from '../components/SingleFixture';
@@ -49,11 +48,6 @@ const KitchenSink: NextPage = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <Head>
-        <title>Revoke.cash Browser Extension - Kitchen Sink</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main className="flex w-full flex-1 flex-col items-center justify-start px-20 text-center gap-2">
         <button className="border border-black p-2" onClick={connect}>
           {address ?? 'Connect'}
