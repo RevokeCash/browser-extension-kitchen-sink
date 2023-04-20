@@ -7,8 +7,8 @@ import { SingleFixture } from '../components/SingleFixture';
 import { ApproveFixture } from '../lib/fixtures/transaction/ApproveFixture';
 import { IncreaseAllowanceFixture } from '../lib/fixtures/transaction/IncreaseAllowanceFixture';
 import { Permit2ApproveFixture } from '../lib/fixtures/transaction/Permit2ApproveFixture';
-import { SecurityUpdatesFixture } from '../lib/fixtures/transaction/SecurityUpdatesFixture';
 import { SetApprovalForAllFixture } from '../lib/fixtures/transaction/SetApprovalForAllFixture';
+import { SuspectedScamFixture } from '../lib/fixtures/transaction/SuspectedScamFixture';
 import { DaiPermitFixture } from '../lib/fixtures/typed-signature/DaiPermitFixture';
 import { BlurBulkFixture } from '../lib/fixtures/typed-signature/listing/BlurBulkFixture';
 import { BlurFixture } from '../lib/fixtures/typed-signature/listing/BlurFixture';
@@ -23,6 +23,7 @@ import { Permit2SingleFixture } from '../lib/fixtures/typed-signature/Permit2Sin
 import { PermitFixture } from '../lib/fixtures/typed-signature/PermitFixture';
 import { PermitForAllFixture } from '../lib/fixtures/typed-signature/PermitForAllFixture';
 import { EthSignFixture } from '../lib/fixtures/untyped-signature/EthSIgnFixture';
+import { HexEncodedHashFixture } from '../lib/fixtures/untyped-signature/HexEncodedHashFixture';
 import { PersonalSignFixture } from '../lib/fixtures/untyped-signature/PersonalSignFixture';
 import { Method } from '../lib/types';
 
@@ -87,10 +88,16 @@ const KitchenSink: NextPage = () => {
             <FixtureCategory title="Untyped Signatures">
               <SingleFixture title="eth_sign" fixture={new EthSignFixture(address)} method={method} />
               <SingleFixture title="personal_sign" fixture={new PersonalSignFixture(address)} method={method} />
+              <SingleFixture title="hex encoded hash (no risk)" fixture={new HexEncodedHashFixture(address)} method={method} />
             </FixtureCategory>
 
             <FixtureCategory title="Suspected Scams">
-              <SingleFixture title='"security updates"' fixture={new SecurityUpdatesFixture(address)} method={method} />
+              <SingleFixture title="SecurityUpdate()" fixture={new SuspectedScamFixture(address, '0x6d3F7b83bcec11381E81EC858Cc802B1A44f84E2', '0x5fba79f5')} method={method} />
+              <SingleFixture title="ClaimRewards()" fixture={new SuspectedScamFixture(address, '0x10f9ec4181988b83d36a9df8ec87a73a3e27e4ac', '0x12798972')} method={method} />
+              <SingleFixture title="ClaimReward()" fixture={new SuspectedScamFixture(address, '0xA9193a6E406Ec0C715ce985f619263cb0f717B79', '0x79372f9a')} method={method} />
+              <SingleFixture title="Claim()" fixture={new SuspectedScamFixture(address, '0x0f56CcEB1A2dC1a598bb14d7121525dB2C05a7c5', '0x3158952e')} method={method} />
+              <SingleFixture title="claim()" fixture={new SuspectedScamFixture(address, '0x08915b57db78c0ff7e26b241820eede4b1badf2f', '0x4e71d92d')} method={method} />
+              <SingleFixture title="NetworkMerge()" fixture={new SuspectedScamFixture(address, '0x00000f312c54d0dd25888ee9cdc3dee988700000', '0x9c9316c5')} method={method} />
             </FixtureCategory>
 
             <FixtureCategory title="Meta Transactions">

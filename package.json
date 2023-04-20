@@ -31,6 +31,6 @@
   },
   "prettier": {
     "singleQuote": true,
-    "printWidth": 160
+    "printWidth": 180
   }
 }
