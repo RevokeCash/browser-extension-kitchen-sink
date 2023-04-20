@@ -1,33 +1,15 @@
-import { Fixture } from '../lib/fixtures/Fixture';
-import { SingleFixture } from './SingleFixture';
-
 type Method = 'request' | 'sendAsync' | 'sendPromise' | 'sendCallback' | 'bypass';
 
 interface Props {
   title: string;
-  methods?: Method[];
-  fixture: Fixture;
+  children: React.ReactNode;
 }
 
-export const FixtureCategory = ({ title, methods: passedMethods, fixture }: Props) => {
-  const methods = passedMethods ?? ['request', 'sendAsync', 'sendPromise', 'sendCallback', 'bypass'];
-
-  const titles = {
-    request: 'ethereum.request',
-    sendAsync: 'ethereum.sendAsync',
-    sendPromise: 'ethereum.send (promise)',
-    sendCallback: 'ethereum.send (callback)',
-    bypass: 'bypass',
-  };
-
+export const FixtureCategory = ({ title, children }: Props) => {
   return (
     <>
-      <div>{title}</div>
-      <div className="flex w-full items-center justify-center px-20 text-center gap-2">
-        {methods.map((method) => (
-          <SingleFixture key={method} method={method} fixture={fixture} title={titles[method]} />
-        ))}
-      </div>
+      <div className="font-medium">{title}</div>
+      <div className="flex flex-wrap items-center justify-center gap-2">{children}</div>
     </>
   );
 };

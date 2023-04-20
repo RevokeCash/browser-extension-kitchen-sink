@@ -2,6 +2,7 @@ import { providers } from 'ethers';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { FixtureCategory } from '../components/FixtureCategory';
+import { MethodToggle } from '../components/MethodToggle';
 import { SingleFixture } from '../components/SingleFixture';
 import { ApproveFixture } from '../lib/fixtures/transaction/ApproveFixture';
 import { IncreaseAllowanceFixture } from '../lib/fixtures/transaction/IncreaseAllowanceFixture';
@@ -23,6 +24,7 @@ import { PermitFixture } from '../lib/fixtures/typed-signature/PermitFixture';
 import { PermitForAllFixture } from '../lib/fixtures/typed-signature/PermitForAllFixture';
 import { EthSignFixture } from '../lib/fixtures/untyped-signature/EthSIgnFixture';
 import { PersonalSignFixture } from '../lib/fixtures/untyped-signature/PersonalSignFixture';
+import { Method } from '../lib/types';
 
 declare let window: Window & {
   ethereum: any;
@@ -30,6 +32,7 @@ declare let window: Window & {
 
 const KitchenSink: NextPage = () => {
   const [address, setAddress] = useState<string>();
+  const [method, setMethod] = useState<Method>('request');
 
   useEffect(() => {
     const connectIfAlreadyConnectedBefore = async () => {
@@ -53,85 +56,48 @@ const KitchenSink: NextPage = () => {
           {address ?? 'Connect'}
         </button>
 
+        {address && <MethodToggle method={method} setMethod={setMethod} />}
+
         {address && (
           <>
-            <FixtureCategory title="Allowances" fixture={new ApproveFixture(address)} />
-            <div className="flex gap-2">
-              <SingleFixture
-                title="increaseAllowance()"
-                fixture={new IncreaseAllowanceFixture(address)}
-                method="request"
-              />
-              <SingleFixture
-                title="setApprovalForAll()"
-                fixture={new SetApprovalForAllFixture(address)}
-                method="request"
-              />
-              <SingleFixture
-                title="TODO: Permit2 approve()"
-                fixture={new Permit2ApproveFixture(address)}
-                method="request"
-              />
-            </div>
+            <FixtureCategory title="Allowances">
+              <SingleFixture title="approve()" fixture={new ApproveFixture(address)} method={method} />
+              <SingleFixture title="increaseAllowance()" fixture={new IncreaseAllowanceFixture(address)} method={method} />
+              <SingleFixture title="setApprovalForAll()" fixture={new SetApprovalForAllFixture(address)} method={method} />
+              <SingleFixture title="TODO: Permit2 approve()" fixture={new Permit2ApproveFixture(address)} method={method} />
+            </FixtureCategory>
 
-            <FixtureCategory title="Permit" fixture={new PermitFixture(address)} />
-            <div className="flex gap-2">
-              <SingleFixture title="Permit2 Single" fixture={new Permit2SingleFixture(address)} method="request" />
-              <SingleFixture title="Permit2 Batch" fixture={new Permit2BatchFixture(address)} method="request" />
-              <SingleFixture title="PermitForAll" fixture={new PermitForAllFixture(address)} method="request" />
-            </div>
+            <FixtureCategory title="Permit">
+              <SingleFixture title="Permit" fixture={new PermitFixture(address)} method={method} />
+              <SingleFixture title="Permit2 Single" fixture={new Permit2SingleFixture(address)} method={method} />
+              <SingleFixture title="Permit2 Batch" fixture={new Permit2BatchFixture(address)} method={method} />
+              <SingleFixture title="PermitForAll" fixture={new PermitForAllFixture(address)} method={method} />
+              <SingleFixture title="Permit (DAI + eth_signTypedData_v3)" fixture={new DaiPermitFixture(address)} method={method} />
+            </FixtureCategory>
 
-            <FixtureCategory title="Permit (DAI + eth_signTypedData_v3)" fixture={new DaiPermitFixture(address)} />
+            <FixtureCategory title="NFT Listings">
+              <SingleFixture title="Seaport v1" fixture={new Seaport1Fixture(address)} method={method} />
+              <SingleFixture title="Seaport v1 (empty consideration)" fixture={new Seaport1Fixture(address, [])} method={method} />
+              <SingleFixture title="Seaport v1.4 (bulk)" fixture={new Seaport14Fixture(address)} method={method} />
+              <SingleFixture title="LooksRare" fixture={new LooksRareFixture(address)} method={method} />
+              <SingleFixture title="Blur" fixture={new BlurFixture(address)} method={method} />
+              <SingleFixture title="Blur (bulk)" fixture={new BlurBulkFixture(address)} method={method} />
+            </FixtureCategory>
 
-            <div>NFT Listings</div>
-            <div className="flex gap-2">
-              <SingleFixture title="Seaport v1" fixture={new Seaport1Fixture(address)} method="request" />
-              <SingleFixture
-                title="Seaport v1 (empty consideration)"
-                fixture={new Seaport1Fixture(address, [])}
-                method="request"
-              />
-              <SingleFixture title="Seaport v1 (bypass)" fixture={new Seaport1Fixture(address)} method="bypass" />
-              <SingleFixture title="Seaport v1.4 (bulk)" fixture={new Seaport14Fixture(address)} method="request" />
-            </div>
-            <div className="flex gap-2">
-              <SingleFixture title="LooksRare" fixture={new LooksRareFixture(address)} method="request" />
-              <SingleFixture title="Blur" fixture={new BlurFixture(address)} method="request" />
-              <SingleFixture title="Blur (bulk)" fixture={new BlurBulkFixture(address)} method="request" />
-            </div>
+            <FixtureCategory title="Untyped Signatures">
+              <SingleFixture title="eth_sign" fixture={new EthSignFixture(address)} method={method} />
+              <SingleFixture title="personal_sign" fixture={new PersonalSignFixture(address)} method={method} />
+            </FixtureCategory>
 
-            <FixtureCategory title="eth_sign" fixture={new EthSignFixture(address)} />
-            <FixtureCategory title="personal_sign" fixture={new PersonalSignFixture(address)} />
+            <FixtureCategory title="Suspected Scams">
+              <SingleFixture title='"security updates"' fixture={new SecurityUpdatesFixture(address)} method={method} />
+            </FixtureCategory>
 
-            <div>Suspected Scam Address</div>
-            <div className="flex gap-2">
-              <SingleFixture
-                title='"security updates"'
-                fixture={new SecurityUpdatesFixture(address)}
-                method="request"
-              />
-              <SingleFixture
-                title='"security updates" (bypass)'
-                fixture={new SecurityUpdatesFixture(address)}
-                method="bypass"
-              />
-            </div>
-
-            <div>Meta Transactions</div>
-            <div className="flex gap-2">
-              <SingleFixture title="Biconomy Native" fixture={new BiconomyNativeFixture(address)} method="request" />
-              <SingleFixture
-                title="Biconomy Native (bypass)"
-                fixture={new BiconomyNativeFixture(address)}
-                method="bypass"
-              />
-              <SingleFixture
-                title="TODO: Biconomy Forwarder"
-                fixture={new BiconomyForwarderFixture(address)}
-                method="request"
-              />
-              <SingleFixture title="GSN Relay" fixture={new GsnRelayFixture(address)} method="request" />
-            </div>
+            <FixtureCategory title="Meta Transactions">
+              <SingleFixture title="Biconomy Native" fixture={new BiconomyNativeFixture(address)} method={method} />
+              <SingleFixture title="TODO: Biconomy Forwarder" fixture={new BiconomyForwarderFixture(address)} method={method} />
+              <SingleFixture title="GSN Relay" fixture={new GsnRelayFixture(address)} method={method} />
+            </FixtureCategory>
           </>
         )}
       </main>
