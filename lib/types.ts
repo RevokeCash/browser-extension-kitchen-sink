@@ -1,1 +1,1 @@
-export type Method = 'request' | 'sendAsync' | 'sendPromise' | 'sendCallback' | 'bypass';
+export type Method = 'request' | 'sendAsync' | 'sendPromise' | 'sendCallback' | 'bypass' | 'arrayBypass' | 'coinbaseBypass';

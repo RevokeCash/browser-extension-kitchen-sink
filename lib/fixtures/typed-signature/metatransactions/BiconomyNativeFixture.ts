@@ -26,8 +26,7 @@ export class BiconomyNativeFixture extends Fixture {
       message: {
         nonce: 0,
         from: address,
-        functionSignature:
-          '0x095ea7b30000000000000000000000001fdc5e69729eecf8e933c904e86faf7a8886f661ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+        functionSignature: '0x095ea7b30000000000000000000000001fdc5e69729eecf8e933c904e86faf7a8886f661ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
       },
     };
 

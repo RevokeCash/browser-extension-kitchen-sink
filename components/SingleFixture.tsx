@@ -1,6 +1,5 @@
 import { Fixture } from '../lib/fixtures/Fixture';
-
-type Method = 'request' | 'sendAsync' | 'sendPromise' | 'sendCallback' | 'bypass';
+import { Method } from '../lib/types';
 
 interface Props {
   title: string;

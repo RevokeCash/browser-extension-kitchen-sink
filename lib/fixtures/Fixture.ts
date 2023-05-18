@@ -1,4 +1,4 @@
-import { bypass, request, sendAsync, sendCallback, sendPromise } from '../utils';
+import { arrayBypass, bypass, coinbaseBypass, request, sendAsync, sendCallback, sendPromise } from '../utils';
 
 export class Fixture {
   constructor(public method: string, public params: any[]) {}
@@ -21,5 +21,13 @@ export class Fixture {
 
   bypass() {
     return bypass(this.method, this.params);
+  }
+
+  arrayBypass() {
+    return arrayBypass(this.method, this.params);
+  }
+
+  coinbaseBypass() {
+    return coinbaseBypass(this.method, this.params);
   }
 }
