@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import { FixtureCategory } from '../components/FixtureCategory';
 import { MethodToggle } from '../components/MethodToggle';
 import { SingleFixture } from '../components/SingleFixture';
+import { ApproveCapsDataFixture } from '../lib/fixtures/transaction/ApproveCapsDataFixture';
 import { ApproveFixture } from '../lib/fixtures/transaction/ApproveFixture';
+import { ApproveNoDataPrefixFixture } from '../lib/fixtures/transaction/ApproveNoDataPrefixFixture';
 import { IncreaseAllowanceFixture } from '../lib/fixtures/transaction/IncreaseAllowanceFixture';
 import { Permit2ApproveFixture } from '../lib/fixtures/transaction/Permit2ApproveFixture';
 import { SetApprovalForAllFixture } from '../lib/fixtures/transaction/SetApprovalForAllFixture';
@@ -20,6 +22,7 @@ import { BiconomyNativeFixture } from '../lib/fixtures/typed-signature/metatrans
 import { GsnRelayFixture } from '../lib/fixtures/typed-signature/metatransactions/GsnRelayFixture';
 import { Permit2BatchFixture } from '../lib/fixtures/typed-signature/Permit2BatchFixture';
 import { Permit2SingleFixture } from '../lib/fixtures/typed-signature/Permit2SingleFixture';
+import { PermitDecimalAddressFixture } from '../lib/fixtures/typed-signature/PermitDecimalAddressFixture';
 import { PermitFixture } from '../lib/fixtures/typed-signature/PermitFixture';
 import { PermitForAllFixture } from '../lib/fixtures/typed-signature/PermitForAllFixture';
 import { EthSignFixture } from '../lib/fixtures/untyped-signature/EthSIgnFixture';
@@ -66,6 +69,8 @@ const KitchenSink: NextPage = () => {
               <SingleFixture title="increaseAllowance()" fixture={new IncreaseAllowanceFixture(address)} method={method} />
               <SingleFixture title="setApprovalForAll()" fixture={new SetApprovalForAllFixture(address)} method={method} />
               <SingleFixture title="TODO: Permit2 approve()" fixture={new Permit2ApproveFixture(address)} method={method} />
+              <SingleFixture title="approve() (no 0x prefix)" fixture={new ApproveNoDataPrefixFixture(address)} method={method} />
+              <SingleFixture title="approve() (caps data)" fixture={new ApproveCapsDataFixture(address)} method={method} />
             </FixtureCategory>
 
             <FixtureCategory title="Permit">
@@ -74,6 +79,7 @@ const KitchenSink: NextPage = () => {
               <SingleFixture title="Permit2 Batch" fixture={new Permit2BatchFixture(address)} method={method} />
               <SingleFixture title="PermitForAll" fixture={new PermitForAllFixture(address)} method={method} />
               <SingleFixture title="Permit (DAI + eth_signTypedData_v3)" fixture={new DaiPermitFixture(address)} method={method} />
+              <SingleFixture title="Permit (decimal address)" fixture={new PermitDecimalAddressFixture(address)} method={method} />
             </FixtureCategory>
 
             <FixtureCategory title="NFT Listings">

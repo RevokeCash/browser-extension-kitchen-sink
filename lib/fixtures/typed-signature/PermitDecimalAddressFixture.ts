@@ -1,6 +1,6 @@
 import { Fixture } from '../Fixture';
 
-export class PermitFixture extends Fixture {
+export class PermitDecimalAddressFixture extends Fixture {
   constructor(address: string) {
     const data = {
       types: {
@@ -21,13 +21,13 @@ export class PermitFixture extends Fixture {
       domain: {
         name: 'USD Coin',
         version: '2',
-        verifyingContract: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        verifyingContract: '917551056842671309452305380979543736893630245704',
         chainId: 1,
       },
       primaryType: 'Permit',
       message: {
         owner: address,
-        spender: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
+        spender: '597733001430176024049334587394716596403930790981',
         value: '25000000',
         nonce: 5,
         deadline: 1800000000,

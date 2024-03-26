@@ -9,7 +9,7 @@ interface Props {
 
 export const SingleFixture = ({ title, method, fixture }: Props) => {
   return (
-    <button className="border border-black p-2" onClick={() => fixture[method]()}>
+    <button className="border border-black px-3 py-1 rounded-lg" onClick={() => fixture[method]()}>
       {title}
     </button>
   );
