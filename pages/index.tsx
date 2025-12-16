@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { FixtureCategory } from '../components/FixtureCategory';
 import { MethodToggle } from '../components/MethodToggle';
 import { SingleFixture } from '../components/SingleFixture';
+import { SendEthFixture } from '../lib/fixtures/send-tokens/SendEthFixture';
+import { SendUsdcFixture } from '../lib/fixtures/send-tokens/SendUsdcFixture';
+import { TodoFixture } from '../lib/fixtures/TodoFixture';
 import { ApproveCapsDataFixture } from '../lib/fixtures/transaction/ApproveCapsDataFixture';
 import { ApproveFixture } from '../lib/fixtures/transaction/ApproveFixture';
 import { ApproveNoDataPrefixFixture } from '../lib/fixtures/transaction/ApproveNoDataPrefixFixture';
@@ -11,6 +14,7 @@ import { IncreaseAllowanceFixture } from '../lib/fixtures/transaction/IncreaseAl
 import { Permit2ApproveFixture } from '../lib/fixtures/transaction/Permit2ApproveFixture';
 import { SetApprovalForAllFixture } from '../lib/fixtures/transaction/SetApprovalForAllFixture';
 import { SuspectedScamFixture } from '../lib/fixtures/transaction/SuspectedScamFixture';
+import { WalletSendCallsFixture } from '../lib/fixtures/transaction/WalletSendCalls';
 import { DaiPermitFixture } from '../lib/fixtures/typed-signature/DaiPermitFixture';
 import { BlurBulkFixture } from '../lib/fixtures/typed-signature/listing/BlurBulkFixture';
 import { BlurFixture } from '../lib/fixtures/typed-signature/listing/BlurFixture';
@@ -71,6 +75,7 @@ const KitchenSink: NextPage = () => {
               <SingleFixture title="TODO: Permit2 approve()" fixture={new Permit2ApproveFixture(address)} method={method} />
               <SingleFixture title="approve() (no 0x prefix)" fixture={new ApproveNoDataPrefixFixture(address)} method={method} />
               <SingleFixture title="approve() (caps data)" fixture={new ApproveCapsDataFixture(address)} method={method} />
+              <SingleFixture title="wallet_sendCalls" fixture={new WalletSendCallsFixture(address)} method={method} />
             </FixtureCategory>
 
             <FixtureCategory title="Permit">
@@ -110,6 +115,13 @@ const KitchenSink: NextPage = () => {
               <SingleFixture title="Biconomy Native" fixture={new BiconomyNativeFixture(address)} method={method} />
               <SingleFixture title="TODO: Biconomy Forwarder" fixture={new BiconomyForwarderFixture(address)} method={method} />
               <SingleFixture title="GSN Relay" fixture={new GsnRelayFixture(address)} method={method} />
+            </FixtureCategory>
+
+            <FixtureCategory title="Sending Tokens">
+              <SingleFixture title="Send ETH" fixture={new SendEthFixture(address)} method={method} />
+              <SingleFixture title="Send USDC" fixture={new SendUsdcFixture(address)} method={method} />
+              <SingleFixture title="TODO: Send NFTs (use OpenSea to test)" fixture={new TodoFixture(address)} method={method} />
+              <SingleFixture title="TODO: Swaps (use DEXes to test)" fixture={new TodoFixture(address)} method={method} />
             </FixtureCategory>
           </>
         )}
