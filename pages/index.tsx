@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { FixtureCategory } from '../components/FixtureCategory';
 import { MethodToggle } from '../components/MethodToggle';
 import { SingleFixture } from '../components/SingleFixture';
+import { RevertFixture } from '../lib/fixtures/send-tokens/RevertFixture';
 import { SendEthFixture } from '../lib/fixtures/send-tokens/SendEthFixture';
 import { SendUsdcFixture } from '../lib/fixtures/send-tokens/SendUsdcFixture';
 import { TodoFixture } from '../lib/fixtures/TodoFixture';
@@ -122,6 +123,10 @@ const KitchenSink: NextPage = () => {
               <SingleFixture title="Send USDC" fixture={new SendUsdcFixture(address)} method={method} />
               <SingleFixture title="TODO: Send NFTs (use OpenSea to test)" fixture={new TodoFixture(address)} method={method} />
               <SingleFixture title="TODO: Swaps (use DEXes to test)" fixture={new TodoFixture(address)} method={method} />
+            </FixtureCategory>
+
+            <FixtureCategory title="Revert">
+              <SingleFixture title="Reverting transaction" fixture={new RevertFixture(address)} method={method} />
             </FixtureCategory>
           </>
         )}

@@ -1,10 +1,10 @@
 import { Fixture } from '../Fixture';
 
-export class SendEthFixture extends Fixture {
+export class RevertFixture extends Fixture {
   constructor(address: string) {
     const data = {
       from: address,
-      to: '0xfcbf17200c64e860f6639aa12b525015d115f863',
+      to: '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
       value: '10000000000000000', // 0.01 ETH
     };
 
